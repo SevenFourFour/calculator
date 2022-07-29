@@ -11,12 +11,17 @@ function multiply() {
 }
 
 function divide() {
-    return (Math.floor((arguments[0] / arguments[1]) * 1000) / 1000);
+    if (arguments[1] == 0) {
+        return ('OOPS')
+    }
+    else
+        return (Math.floor((arguments[0] / arguments[1]) * 1000) / 1000);
 }
 
 function operate(callback, num1, num2) {
     return callback(num1, num2);
 }
+
 
 
 const num_buttons = document.querySelectorAll('.num-button');
