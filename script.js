@@ -148,5 +148,6 @@ function simplify() {
         stored_information.number_one = parseFloat(output_field.innerHTML);
         stored_information.operation = null;
         stored_information.number_two = null;
+        is_new_number = true;
     }
 }
