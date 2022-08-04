@@ -19,7 +19,10 @@ function divide() {
 }
 
 function operate(callback, num1, num2) {
-    return callback(num1, num2);
+    var output = callback(num1, num2);
+    if (output > 999999999999)
+        return ('OVERFLOW');
+    return output;
 }
 
 
@@ -54,7 +57,6 @@ clear_button.addEventListener('click', function (e) {
 // Adds number buttons to display on click
 num_buttons.forEach(chosen_button => {
     chosen_button.addEventListener('click', function (e) {
-
         if (output_field.innerHTML.length < 12) {
 
             if (output_field.innerHTML == ' ' && chosen_button.id != '.') {
@@ -64,19 +66,32 @@ num_buttons.forEach(chosen_button => {
                 if (chosen_button.id == '.' && decimal_used == false) {
                     output_field.innerHTML += '.';
                     decimal_used = true;
+                    is_new_number = false;
                     return;
                 }
-                else if (chosen_button.id != '.')
-                    if (is_new_number == true) {
-                        output_field.innerHTML = ' '
-                    }
-                output_field.innerHTML += chosen_button.id;
-                is_new_number = false;
+                else if (chosen_button.id != '.') {
+                    if (is_new_number == true)
+                        output_field.innerHTML = ' ';
 
+                    output_field.innerHTML += chosen_button.id;
+                }
             }
         }
-    })
+
+        else {
+            if (is_new_number == true) {
+                output_field.innerHTML = chosen_button.id;
+                is_new_number = false;
+                return;
+            }
+        }
+
+        is_new_number = false;
+
+    }
+    )
 })
+
 
 // Creates the operation to be used
 op_buttons.forEach(chosen_button => {
@@ -144,7 +159,7 @@ function simplify() {
     if (stored_information.number_one != null && stored_information.operation != null) {
         if (stored_information.number_two == null)
             stored_information.number_two = parseFloat(output_field.innerHTML);
-        output_field.innerHTML = operate(stored_information.operation, stored_information.number_one, stored_information.number_two);
+        output_field.innerHTML = parseFloat(operate(stored_information.operation, stored_information.number_one, stored_information.number_two)).toString().substr(0, 11);
         stored_information.number_one = parseFloat(output_field.innerHTML);
         stored_information.operation = null;
         stored_information.number_two = null;
